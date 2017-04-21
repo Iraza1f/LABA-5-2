@@ -3,10 +3,11 @@
 #include <map>
 #include <algorithm>  
 #include <string>
+#include <iomanip>
+#include <functional>
 using namespace std;
-bool F (const pair<int, char> &x) { return x.first > 5; };
+bool F(pair<int, char> &it) { return it.first > 5; };
 int main()
-
 {
 	ofstream f;
 	f.open("live.txt");
@@ -45,7 +46,7 @@ int main()
 
 		case 3:
 			system("cls");
-			copy_if(map1.begin(), map1.end(), map2.begin(), F);
+			copy(map1.begin(), map1.end(), inserter(map2, map2.end()));
 			cout << "Первый контейнер " << endl;
 			for (auto it = map1.begin(); it != map1.end(); ++it)
 			{
@@ -69,7 +70,7 @@ int main()
 
 		case 5:
 			system("cls");
-			score = count_if(map3.begin(), map3.end(), F);
+			score = count_if(map3.begin(), map3.end(),F);
 			if (score != 0)
 			{
 				cout << "Соответсвуют " << score << " элементов контейнера" << endl;
