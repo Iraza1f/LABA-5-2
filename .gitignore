@@ -4,3 +4,4 @@ Debug/vc120.idb
 *.pdb
 LABA 5-2.vcxproj.filters
 *.vcxproj
+*.log
