@@ -5,93 +5,130 @@
 #include <string>
 #include <iomanip>
 #include <functional>
+#include <iterator>
+
 using namespace std;
-bool F(pair<int, char> &it) { return it.first > 5; };
+
+template <typename map, typename F>
+void delmap(map& my_map, F pred)
+{
+	typename map::iterator i = my_map.begin();
+	while ((i = find_if(i, my_map.end(), pred)) != my_map.end())
+		my_map.erase(i++);
+}
+
+template <class InputIterator, class Predicate>
+void searching(InputIterator first, InputIterator last, Predicate Pred)
+{
+
+	auto p = find_if(first, last, Pred);
+
+	if (p == last) {
+		cout << "ÐÑƒÐ¶Ð½Ñ‹Ñ… ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð½ÐµÑ‚ \n" << endl;
+	}
+	else {
+		cout << "Ð­Ð»ÐµÐ¼ÐµÐ½Ñ‚ Ð½Ð°Ð¹Ð´ÐµÐ½ \n";
+	}
+}
+
+bool IsEven(const pair<int, string> &p) { return p.first % 2 == 0; };
+
 int main()
 {
 	ofstream f;
 	f.open("live.txt");
-	map<int, char> map1;
-	map<int, char> map2;
-	map<int, char> map3;
-	int p1 = 0;
-	char p2;
-	int score = 0;
-	int variant = 0;
-	int s = 0;
+
+	map<int, string> map1;
+	map<int, string> map2;
+	map<int, string> map3;
+
+	int key = 0, score = 0, variant = 0, exit = 0;
+	string val;
+
+	map<int, string>::iterator it;
+
 	setlocale(LC_ALL, "Russian");
-	while (s == 0)
+
+	while (exit == 0)
 	{
-		cout << "Íàæìèòå \n 1. ÷òîáû âíåñòè ýëåìåíòû â ïåðâûé map \n 2. 2-3 \n 3. 4-8 \n 4. 9-10 \n 5. 11-12 \n 9. âûõîä \n" << endl;
+		cout << " 1. Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð½Ð¾Ð²Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð² map1 \n 2. Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð½Ð¾Ð²Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð² map2";
+		cout << "\n 3. ÐŸÑ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ map (Ð¿Ð¾ ÑƒÐ±Ñ‹Ð²Ð°Ð½Ð¸ÑŽ)  \n 4. ÐŸÐµÑ€ÐµÐ¼ÐµÑ‰ÐµÐ½Ð¸Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ ÑƒÑÐ»Ð¾Ð²Ð¸ÐµÐ¼ \n 5. Ð¡Ð»Ð¸ÑÐ½Ð¸Ðµ map1,2 Ð² map3";
+		cout << "\n 6. ÐŸÐ¾Ð´ÑÑ‡ÐµÑ‚ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² map3, ÑƒÐ´Ð¾Ð²Ð»ÐµÑ‚Ð²Ð¾Ñ€ÑÑŽÑ‰Ð¸Ñ… Ð·Ð°Ð´Ð°Ð½Ð½Ð¾Ð¼Ñƒ ÑƒÑÐ»Ð¾Ð²Ð¸ÑŽ \n 7. ÐŸÐ¾Ð¸ÑÐº ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ñ ÑƒÑÐ»Ð¾Ð²Ð¸ÐµÐ¼";
+		cout << "\n 8. Ð’Ñ‹Ñ…Ð¾Ð´" << endl;
 		cin >> variant;
 		switch (variant)
 		{
 		case 1:
 			system("cls");
-			cout << "Ââåäèòå ÷èñëî" << endl;
-			cin >> p1;
-			cout << "Ââåäèòå ñèìâîë" << endl;
-			cin >> p2;
-			map1.insert(pair<int, char>(p1,p2));
+			cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ»ÑŽÑ‡" << endl;
+			cin >> key;
+			cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ" << endl;
+			cin >> val;
+			map1.insert(pair<int, string>(key, val));
 			break;
 
 		case 2:
 			system("cls");
-			cout << "Ïåðâûé êîíòåéíåð" << endl;
-			for (auto it = map1.rbegin(); it != map1.rend(); ++it)
-			{
-				cout << it->first << " : " << it->second << endl;
-			}
+			cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ»ÑŽÑ‡" << endl;
+			cin >> key;
+			cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ" << endl;
+			cin >> val;
+			map2.insert(pair<int, string>(key, val));
 			break;
 
 		case 3:
 			system("cls");
-			copy(map1.begin(), map1.end(), inserter(map2, map2.end()));
-			cout << "Ïåðâûé êîíòåéíåð " << endl;
-			for (auto it = map1.begin(); it != map1.end(); ++it)
+			cout << "ÐŸÐµÑ€Ð²Ñ‹Ð¹ map" << endl;
+			for (auto it = map1.rbegin(); it != map1.rend(); ++it)
 			{
-				cout << it->first << " : " << it->second << endl;
-			}
-			cout << "Âòîðîé êîíòåéíåð " << endl;
-			for (auto it = map2.begin(); it != map2.end(); ++it)
-			{
-				cout << it->first << " : " << it->second << endl;
+				cout << it->first << " => " << it->second << endl;
 			}
 			break;
 
 		case 4:
 			system("cls");
-			merge(map1.begin(), map1.end(), map2.begin(), map2.end(),map3.begin());
-			for (auto it = map3.begin(); it != map3.end(); ++it)
+			copy_if(map1.begin(), map1.end(), inserter(map2, map2.end()),
+				[](const pair<int, string> &p) { return p.first % 2 == 0; });
+			delmap(map1, IsEven);
+			cout << "ÐŸÐµÑ€Ð²Ñ‹Ð¹ map" << endl;
+			for (auto it = map1.begin(); it != map1.end(); ++it)
 			{
-				cout << it->first << " : " << it->second << endl;
+				cout << it->first << " => " << it->second << endl;
+			}
+			cout << "Ð’Ñ‚Ð¾Ñ€Ð¾Ð¹ map" << endl;
+			for (auto it = map2.begin(); it != map2.end(); ++it)
+			{
+				cout << it->first << " => " << it->second << endl;
 			}
 			break;
 
 		case 5:
 			system("cls");
-			score = count_if(map3.begin(), map3.end(),F);
-			if (score != 0)
+			merge(map1.begin(), map1.end(), map2.begin(), map2.end(), inserter(map3, map3.begin()));
+			for (auto it = map3.begin(); it != map3.end(); ++it)
 			{
-				cout << "Ñîîòâåòñâóþò " << score << " ýëåìåíòîâ êîíòåéíåðà" << endl;
-				f << "Ñîîòâåòñâóþò " << score << " ýëåìåíòîâ êîíòåéíåðà" << endl;
-			}
-			else
-			{
-				cout << "Â êîíòåéíåðå íåò ñîîòâåòñâóþùèõ ýëåìåíòîâ" << endl;
-				f << "Â êîíòåéíåðå íåò ñîîòâåòñâóþùèõ ýëåìåíòîâ" << endl;
+				cout << it->first << " => " << it->second << endl;
 			}
 			break;
 
-		case 9:
+		case 6:
 			system("cls");
-			s = 1;
-
-		default:
-			cout << "Îøèáêà" << endl;
+			score = count_if(map3.begin(), map3.end(), IsEven);
+			if (score != 0)
+			{
+				cout << "Ð¡Ð¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÐ²ÑƒÐµÑ‚ " << score << " ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² map3" << endl;
+			}
+			else
+				cout << "Ð’ map3 Ð½ÐµÑ‚ ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÐ²ÑƒÑŽÑ‰Ð¸Ñ… ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²" << endl;
+			break;
+		case 7:
+			searching(map3.begin(), map3.end(), IsEven);
+			break;
+		case 8:
+			exit=1;
 			break;
 		}
 	}
 	f.close();
-	cout << "Ïðîãðàììà çàâåðøåíà. Ðåçóëüòàò ñîõðàíåí" << endl;
+	cout << "ÐŸÑ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ð° Ð·Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð°. Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½" << endl;
 }
